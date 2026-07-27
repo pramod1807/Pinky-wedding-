@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priyanka & Kiran - Wedding Invitation</title>
+    
+    <!-- Elegant Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL VARIABLES & STYLES --- */
+        :root {
+            /* Variables for the Envelope Overlay */
+            --bg-cream: #fbf8f1;
+            --maroon: #850020;
+            --gold-light: #f3e5ab;
+            --gold-dark: #b8860b;
+            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --text-dark: #333333;
+            
+            /* Variables for the Main Website Content */
+            --burgundy: #7A0C2E;
+            --dark-burgundy: #4A0218;
+            --gold: #D4AF37;
+            --cream: #FAF6EE;
+            --soft-white: #FFFDF9;
+            --font-script: 'Great Vibes', cursive;
+            --font-serif: 'Cinzel', serif;
+            --font-subheading: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --font-display: 'Cinzel', serif; 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--cream);
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            overflow-y: hidden; /* Prevent scrolling while envelope is closed */
+            position: relative;
+        }
+
+        /* =========================================================
+           1. 3D ENVELOPE ANIMATION (UNCHANGED)
+           ========================================================= */
+        #envelope-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--bg-cream);
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            perspective: 1200px;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
+        }
+
+        #envelope-wrapper::before,
+        #envelope-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        #envelope-wrapper::before {
+            top: 30px; left: 30px;
+            border-top: 2px solid var(--gold-dark);
+            border-left: 2px solid var(--gold-dark);
+        }
+        
+        #envelope-wrapper::after {
+            bottom: 30px; right: 30px;
+            border-bottom: 2px solid var(--gold-dark);
+            border-right: 2px solid var(--gold-dark);
+        }
+
+        .envelope-subtitle {
+            font-family: var(--font-display);
+            letter-spacing: 4px;
+            font-size: 1.1rem;
+            color: var(--gold-dark);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            text-align: center;
+            animation: fadeInDown 1.5s ease;
+        }
+
+        .tap-text {
+            margin-top: 50px;
+            font-family: var(--font-subheading);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--maroon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .envelope {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            height: 350px;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: #600018; 
+            border-radius: 5px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border: 2px solid #850021;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 5px; left: 2.5%;
+            width: 95%; height: 95%;
+            background: var(--bg-cream);
+            border: 2px solid var(--gold-dark);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 1s ease-in-out 0.8s, opacity 1s ease 1.2s;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .letter h1 {
+            font-family: var(--font-script);
+            color: var(--maroon);
+            font-size: 2.8rem;
+            margin: 10px 0;
+            line-height: 1.2;
+        }
+
+        .envelope-front {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 100%;
+            border-left: 250px solid #73001c;
+            border-right: 250px solid #73001c;
+            border-bottom: 175px solid #540015;
+            border-top: 175px solid transparent;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-top: 190px solid #600018;
+            border-left: 250px solid transparent;
+            border-right: 250px solid transparent;
+            border-bottom: 160px solid transparent;
+            transform-origin: top;
+            transition: transform 0.8s ease-in-out;
+            z-index: 4;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: -30px; left: 50%;
+            transform: translateX(-50%);
+            width: 80px; height: 80px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: transform 0.3s;
+        }
+
+        .wax-seal:hover { transform: translateX(-50%) scale(1.1); }
+        .wax-seal span {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4A0218;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.4);
+        }
+
+        .envelope-flap.open { transform: rotateX(180deg); z-index: 1; }
+        .letter.pull { transform: translateY(-120%); opacity: 0; }
+
+        @media (max-width: 768px) {
+            #envelope-wrapper::before, #envelope-wrapper::after { width: 80px; height: 80px; }
+            .envelope-front {
+                border-left-width: 180px; border-right-width: 180px;
+                border-bottom-width: 125px; border-top-width: 125px;
+            }
+            .envelope-flap {
+                border-top-width: 140px; border-left-width: 180px;
+                border-right-width: 180px; border-bottom-width: 110px;
+            }
+        }
+
+        /* =========================================================
+           2. MAIN CONTENT STYLING
+           ========================================================= */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            display: none; 
+        }
+
+        /* Sticky Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(250, 246, 238, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 12px 0;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--burgundy);
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--gold);
+        }
+
+        /* Reusable Titles */
+        .section-tagline, .section-subheader {
+            font-family: var(--font-serif);
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-title, .section-header {
+            font-family: var(--font-script);
+            font-size: 3.5rem;
+            color: var(--burgundy);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            background: radial-gradient(circle, rgba(255,253,249,1) 0%, rgba(250,246,238,1) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-names {
+            font-family: var(--font-script);
+            font-size: 4.5rem;
+            color: var(--burgundy);
+            line-height: 1.1;
+            margin: 15px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .hero-ampersand {
+            font-family: var(--font-subheading);
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--gold);
+            display: block;
+        }
+
+        .parents-blessing {
+            font-family: var(--font-subheading);
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .hero-details-badge {
+            display: inline-flex;
+            gap: 20px;
+            background: var(--soft-white);
+            border: 1px solid var(--gold);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            color: var(--burgundy);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-top: 10px;
+        }
+
+        /* Save The Date Card */
+        .save-date-container {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .scratch-card {
+            background: linear-gradient(135deg, var(--burgundy), var(--dark-burgundy));
+            color: var(--gold-light);
+            padding: 40px 20px;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            position: relative;
+            box-shadow: 0 10px 25px rgba(122, 12, 46, 0.2);
+            cursor: pointer;
+            user-select: none;
+            margin-top: 20px;
+        }
+
+        .reveal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--gold-gradient);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            color: var(--dark-burgundy);
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            transition: opacity 0.5s ease;
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.4);
+        }
+
+        .scratch-card.revealed .reveal-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Our Story Timeline */
+        .love-story {
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-subtitle {
+            font-family: var(--font-subheading);
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            position: relative;
+            border-left: 2px solid var(--gold);
+            margin-left: 20px;
+            padding-left: 25px;
+        }
+
+        .timeline-item {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '♥';
+            position: absolute;
+            left: -34px;
+            top: 0;
+            background: var(--cream);
+            color: var(--burgundy);
+            border: 1px solid var(--gold);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+        }
+
+        .timeline-date {
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .timeline-title {
+            font-family: var(--font-subheading);
+            font-size: 1.3rem;
+            color: var(--burgundy);
+            font-weight: 600;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        /* --- COUNTDOWN --- */
+        #countdown {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .countdown-wrapper {
+            background: var(--maroon);
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            padding: 60px 20px;
+            border-radius: 15px;
+            border: 3px solid #b8860b;
+            color: white;
+            box-shadow: 0 15px 40px rgba(133, 0, 32, 0.3);
+            text-align: center;
+        }
+
+        .countdown-wrapper .section-header, 
+        .countdown-wrapper .section-subheader {
+            color: var(--gold-light);
+        }
+
+        #timer {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+
+        .time-num {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--gold-light);
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .time-label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            color: #f3e5ab;
+        }
+
+        /* Events Grid */
+        .events-section {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .event-card {
+            background: var(--soft-white);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .event-name {
+            font-family: var(--font-script);
+            font-size: 2.5rem;
+            color: var(--burgundy);
+            margin-bottom: 10px;
+        }
+
+        .event-detail {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 6px 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-burgundy);
+            color: var(--gold-light);
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 3px double var(--gold);
+        }
+
+        footer h2 {
+            font-family: var(--font-script);
+            font-size: 3.8rem;
+            margin-bottom: 15px;
+            color: #FFF;
+        }
+
+        footer p {
+            font-family: var(--font-subheading);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            color: #DDD;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .hero-names { font-size: 3.5rem; }
+            .time-num { font-size: 2.2rem; }
+            #timer { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================================
+         1. 3D ENVELOPE OPENING ANIMATION
+         ========================================================= -->
+    <div id="envelope-wrapper">
+        <div class="envelope-subtitle">An Invitation Awaits</div>
+        
+        <div class="envelope">
+            <div class="envelope-back"></div>
+            <div class="letter" id="letter">
+                <p style="font-family: var(--font-display); color: var(--gold-dark); letter-spacing: 2px; font-size: 0.9rem;">THE WEDDING OF</p>
+                <h1>Priyanka<br>&amp;<br>Kiran</h1>
+            </div>
+            <div class="envelope-front"></div>
+            <div class="envelope-flap" id="flap">
+                <div class="wax-seal" onclick="openEnvelope()">
+                    <span>PK</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tap-text">✦ Tap the seal to open ✦</div>
+    </div>
+
+    <!-- =========================================================
+         2. MAIN WEBSITE CONTENT 
+         ========================================================= -->
+    <div class="content-wrapper" id="main-content">
+        
+        <!-- STICKY NAVIGATION -->
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#save-date">Save Date</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#countdown">Countdown</a></li>
+                <li><a href="#events">Events</a></li>
+            </ul>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section class="hero" id="hero">
+            <p class="section-tagline">✦ Together with their families ✦</p>
+            <h1 class="hero-names">Priyanka V <span class="hero-ampersand">with</span> Kiran Bavi Shetty</h1>
+            <p class="parents-blessing">(D/o Mrs. & Mr. V) &amp; (S/o Mrs. & Mr. Shetty)</p>
+            
+            <p style="font-family: var(--font-subheading); font-style: italic; max-width: 500px; margin: 0 auto 20px; color: #555; font-size: 1.1rem;">
+                "Two souls, one heart, woven by destiny — request the joy of your presence as we begin our forever."
+            </p>
+            
+            <div class="hero-details-badge">
+                <span>📅 9 - 13 SEPT 2026</span>
+                <span>📍 BANGALORE, INDIA</span>
+            </div>
+        </section>
+
+        <!-- SAVE THE DATE CARD -->
+        <section class="save-date-container" id="save-date">
+            <p class="section-tagline">Mark Your Calendar</p>
+            <h2 class="section-title" style="margin-bottom: 20px; font-size: 2.8rem;">Save the Date</h2>
+            
+            <div class="scratch-card" id="revealCard" onclick="revealDate()">
+                <!-- Flashy Gold Overlay -->
+                <div class="reveal-overlay">✦ Tap to Reveal Dates ✦</div>
+                
+                <p style="font-family: var(--font-serif); letter-spacing: 2px; color: var(--gold-light);">DAYS OF CELEBRATION</p>
+                <h3 style="font-family: var(--font-script); font-size: 3.2rem; margin: 10px 0; color: #FFF;">9 Sept – 13 Sept<br>2026</h3>
+                <p style="font-size: 0.8rem; letter-spacing: 1px; color: var(--gold-light);">📍 BEL ROAD, BANGALORE</p>
+            </div>
+        </section>
+
+        <!-- OUR LOVE STORY -->
+        <section class="love-story" id="story">
+            <p class="section-tagline">Chapter One</p>
+            <h2 class="section-title">Our Love Story</h2>
+            <p class="section-subtitle">"From a fleeting glance to a lifetime promise — every chapter brought us closer."</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-date">AUG 2021</span>
+                    <h3 class="timeline-title">First Meeting</h3>
+                    <p class="timeline-desc">A chance encounter in Bangalore turned into hours of endless conversation and laughter.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">JAN 2023</span>
+                    <h3 class="timeline-title">Falling in Love</h3>
+                    <p class="timeline-desc">Through shared coffees, weekend drives, and mutual dreams, we realized this was the one.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">OCT 2025</span>
+                    <h3 class="timeline-title">The Proposal</h3>
+                    <p class="timeline-desc">A beautiful, heartfelt question was asked surrounded by loved ones, and a tearful "Yes" was the answer.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">SEPT 2026</span>
+                    <h3 class="timeline-title">The Wedding</h3>
+                    <p class="timeline-desc">Forever begins right here in Bangalore, with you by our side to bless our journey.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- COUNTDOWN SECTION -->
+        <section id="countdown" style="border: none;">
+            <div class="countdown-wrapper">
+                <div class="section-subheader">The Countdown Begins</div>
+                <div class="section-header">Counting the Moments</div>
+                <div id="timer">
+                    <div class="time-box">
+                        <span class="time-num" id="days">00</span>
+                        <span class="time-label">DAYS</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-num" id="hours">00</span>
+                        <span class="time-label">HOURS</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-num" id="minutes">00</span>
+                        <span class="time-label">MINUTES</span>
+                    </div>
+                    <div class="time-box">
+                        <span class="time-num" id="seconds">00</span>
+                        <span class="time-label">SECONDS</span>
+                    </div>
+                </div>
+                <p style="margin-top: 30px; font-family: var(--font-serif); font-style: italic; color: var(--gold-light);">Until forever begins ✦ 13 September 2026</p>
+            </div>
+        </section>
+
+        <!-- WEDDING EVENTS -->
+        <section class="events-section" id="events">
+            <p class="section-tagline">Days of Celebration</p>
+            <h2 class="section-title">Wedding Events</h2>
+
+            <div class="events-grid">
+                <!-- Haldi -->
+                <div class="event-card">
+                    <div class="event-icon">🌻</div>
+                    <h3 class="event-name">Haldi</h3>
+                    <p class="event-detail"><strong>📅 Wed, 9 Sept 2026</strong></p>
+                    <p class="event-detail">⏰ 10:00 AM onwards</p>
+                    <p class="event-detail">📍 BEL Road, Bangalore</p>
+                    <p class="event-detail" style="color: var(--gold); margin-top: 10px; font-weight: 500;">Dress Code: Yellow &amp; Marigold</p>
+                </div>
+
+                <!-- Reception -->
+                <div class="event-card">
+                    <div class="event-icon">✨</div>
+                    <h3 class="event-name">Reception</h3>
+                    <p class="event-detail"><strong>📅 Sat, 12 Sept 2026</strong></p>
+                    <p class="event-detail">⏰ 7:00 PM onwards</p>
+                    <p class="event-detail">📍 BEL Road, Bangalore</p>
+                    <p class="event-detail" style="color: var(--gold); margin-top: 10px; font-weight: 500;">Dress Code: Evening Formals</p>
+                </div>
+
+                <!-- Marriage -->
+                <div class="event-card">
+                    <div class="event-icon">🌿</div>
+                    <h3 class="event-name">The Marriage</h3>
+                    <p class="event-detail"><strong>📅 Sun, 13 Sept 2026</strong></p>
+                    <p class="event-detail">⏰ 9:30 AM onwards</p>
+                    <p class="event-detail">📍 BEL Road, Bangalore</p>
+                    <p class="event-detail" style="color: var(--gold); margin-top: 10px; font-weight: 500;">Dress Code: Traditional Indian Elegance</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p class="section-tagline" style="color: var(--gold);">From the Bottom of Our Hearts</p>
+            <h2>Thank You</h2>
+            <p>"To every soul who has loved us, prayed for us, and journeyed with us — your presence is a blessing we will carry forever."</p>
+            
+            <p style="font-family: var(--font-script); font-size: 3.5rem; color: var(--gold-light); margin-top: 20px; text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">Priyanka &amp; Kiran</p>
+        </footer>
+
+    </div>
+
+    <!-- =========================================================
+         3. INTERACTIVE JAVASCRIPT
+         ========================================================= -->
+    <script>
+        // 1. Envelope Open Logic 
+        function openEnvelope() {
+            const flap = document.getElementById('flap');
+            const letter = document.getElementById('letter');
+            const wrapper = document.getElementById('envelope-wrapper');
+            const mainContent = document.getElementById('main-content');
+
+            // Open the flap
+            flap.classList.add('open');
+
+            // Slide the card out after flap opens
+            setTimeout(() => {
+                letter.classList.add('pull');
+            }, 800);
+
+            // Fade out envelope overlay and show website
+            setTimeout(() => {
+                wrapper.style.opacity = '0';
+                mainContent.style.display = 'block';
+                document.body.style.overflowY = 'auto'; // Re-enable scrolling
+                
+                // Completely remove overlay from DOM to prevent blocking clicks
+                setTimeout(() => {
+                    wrapper.style.visibility = 'hidden';
+                }, 1500);
+            }, 1800);
+        }
+
+        // 2. Tap to reveal card animation
+        function revealDate() {
+            document.getElementById('revealCard').classList.add('revealed');
+        }
+
+        // 3. Countdown Timer Logic (Target Date: Sept 13, 2026)
+        const targetDate = new Date("Sep 13, 2026 09:30:00").getTime();
+
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("timer").innerHTML = "<div class='time-num'>Forever Begins Today!</div>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update DOM with leading zeros
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
+    </script>
+</body>
+</html>
